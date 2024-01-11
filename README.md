@@ -255,7 +255,14 @@ kubectl apply -f app-hpa.yaml
 ## 12.
 트러블 슈팅
 
+- nfs에 마운트하는 과정에서 권한이 없어 마운트 되지 않는 상황이 발생했습니다. 해당 링크를 참고해 node에 no_root_squash 설정을 해주어 해결하였습니다. ( https://stackoverflow.com/questions/34878574/kubernetes-mysql-chown-operation-not-permitted)
 
+- HPA 구성 시 각종 예제들의 api verion이 제가 설치된 api버전과 맞지 않아 계속해서 오류가 발생했습니다. (저는 autoscaling/v2 를 사용했습니다.) 이는 Redhat openshift문서를 참고해 버전에 맞게 yaml 문법을 수정 하였습니다. ( https://docs.openshift.com/container-platform/4.11/rest_api/autoscale_apis/horizontalpodautoscaler-autoscaling-v2.html#spec-metrics )
+
+- 이외에도 spring을 build하면서 계속해서 빌드는 완료되지 않고 36%에서 멈추는 상황이 발생했습니다. 이는 아래와 같이 점점 용량이 차올라 하드디스크기 꽉 찰 뻔한 위험한 상황을 초래했습니다. 긴박하게 빌드를 멈추고 다시 내려받아 빌드가 되지 않는 지점을 파악해 수정하여 해결했습니다. 정확히 어떤 이유에서 데이터가 쌓였는지는 아직 파악하지 못했습니다.(과제 제출에 급해서 다시 다운로드 했습니다.)
+
+![Alt text](images/image.png)
+![Alt text](images/image-1.png)
 
 ## 13.
 개선할점
