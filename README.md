@@ -76,7 +76,7 @@ logback-spring.xml : https://github.com/doongu/spring-petclinic-data-jdbc/blob/m
 
 <br/>
 결과 사진
-<p align="center"><img src="./healthcheck.png" width="600" height="50"/></p>
+<p align="center"><img src="./images/healthcheck.png" width="600" height="50"/></p>
 
 ## 3.
 
@@ -180,8 +180,8 @@ spring.datasource.url=jdbc:mysql://mysql.default.svc.cluster.local/petclinic
 nginx ingress-controller를 통해 외부에서 접근할 수 있도록 했습니다.
 
 결과 사진
-<p align="center"><img src="./ingress-check.png" width="600" height="550"/></p>
-<p align="center"><img src="./ingress-check2.png" width="600" height="50"/></p>
+<p align="center"><img src="./images/ingress-check.png" width="600" height="550"/></p>
+<p align="center"><img src="./images/ingress-check2.png" width="600" height="50"/></p>
 
 ## 10.
 별도의 namespace를 지정하지 않고 진행했습니다.
