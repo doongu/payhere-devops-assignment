@@ -130,24 +130,25 @@ spec:
 이후로 scale-in, scale-out을 위해 HPA구성을 아래와 같이 했습니다.
 
 ```yaml
-apiVersion: autoscaling/v2beta2
-kind: HorizontalPodAutoscaler
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
 metadata:
-  name: hpa-resource-cpu
+  name: my-app-hpa
+  namespace: default
 spec:
-  maxReplicas: 10
-  minReplicas: 2
-  scaleTargetRef:
-    apiVersion: apps/v1
-    kind: Deployment
-    name: petclinic-deployment
-  metrics:
-  - type: Resource 
-    resource:
-      name: cpu
-      target:
-        type: Utilization
-        averageUtilization: 50
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: petclinic-deployment
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 50
 ```
 
 ## 6.
