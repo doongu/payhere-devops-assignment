@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+  labels:
+    app: mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+      - name: mysql
+        image: mysql:8.0.26
+        volumeMounts:
+          - mountPath: /var/lib/mysql
+            name: nfs-vol
+        env:
+          - name: MYSQL_DATABASE
+            value: petclinic
+          - name: MYSQL_ROOT_PASSWORD
+            value: petclinic
+        ports:
+        - containerPort: 3306
+      volumes:
+      - name: nfs-vol
+        nfs:
+          server: 192.168.45.35
+          path: /home/nfs
+          readOnly: false
+
