@@ -163,8 +163,31 @@ RUN chown doongu /doongu
 
 
 ## 7.
+별도의 nfs서버를 구축해 아래와 같은 구조로 동작하도록 했으며, mysql의 데이터가 저장되는 곳인 /var/lib/mysql을 마운트 해주었습니다.
+
+<p align="center"><img src="./images/architecture.png" width="400" height="250"/><img src="./images/mysql1.png" width="280" height="100"/></p>
 
 
+
+```yaml
+'''
+     volumeMounts:
+          - mountPath: /var/lib/mysql
+            name: nfs-vol
+      volumes:
+      - name: nfs-vol
+        nfs:
+          server: 192.168.45.35
+          path: /home/nfs
+          readOnly: false
+```
+
+<br/>
+결과 사진
+<p align="center"><img src="./images/mysql2.png" width="5000" height="140"/></p>
+해당 파드를 삭제해도 데이터가 영속적으로 잘 저장된 모습입니다.
+
+<p align="center"><img src="./images/mysql3.png" width="5000" height="140"/></p>
 
 ## 8.
 mysql을 sevice로 배포하고, cluster domain인 mysql.default.svc.cluster.local에 connection하도록 application.properties를 아래와 같이 수정했습니다.
@@ -188,7 +211,6 @@ nginx ingress-controller를 통해 외부에서 접근할 수 있도록 했습�
 
 
 ## 11.
-실행방법
 
 실행환경
 
@@ -198,6 +220,10 @@ nginx ingress-controller를 통해 외부에서 접근할 수 있도록 했습�
  - containerd version : 1.6.26 
 
 해당 환경이 갖추어져 있어야하고, ingress-nginx와 HPA를 위한 Metric Server 설치가 별도로 필요합니다.
+
+또한 별도의 nfs서버가 필요하며 그에 따라 payhere-devops-assignment/yamls
+/mysql-deployment.yaml의 ip부분을 해당 nfs서버 ip로 바꿔주어야 합니다.
+
 
 
 1. petclinic image 가져오기
@@ -215,20 +241,27 @@ docker pull mysql:8.0.2
 git clone https://github.com/doongu/payhere-devops-assignment.git
 ```
 
-이제 차례대로 실행하면 됩니다.
+이제 yamls폴더로 이동 후 차례대로 실행하면 됩니다.
 ```
-
+kubectl apply -f mysql-deployment.yaml
+kubectl apply -f mysql-service.yaml
+kubectl apply -f app-deployment.yaml
+kubectl apply -f app-service.yaml
+kubectl apply -f app-ingress.yaml
+kubectl apply -f app-hpa.yaml
 ```
 
 
 ## 12.
 트러블 슈팅
 
+
+
 ## 13.
 개선할점
 
 - yaml파일 관리하는 방식을 더 체계화 했으면 좋았을 것 같습니다. (변수를 통해 설정을 하는 등의 방식)
 
-- master node에서 ingress를 test했는데, 포트로 열어서 vm이 아닌 다른 환경에서 테스트를 했으면 더 좋았을 것 같습니다.
+- master node에서 ingress를 test했는데(curl로 진행), vm이 아닌 다른 환경에서 접속을 확인했으면 더 좋았을 것 같습니다.
 
 - spec.metrics[0].tpye와 같이 yaml파일의 규칙에 대해 미숙해 공식문서를 참고하기 힘들었습니다. 이런 규칙에 대해 좀 더 숙지해야함을 느끼게 되었습니다.
