@@ -182,9 +182,53 @@ nginx ingress-controller를 통해 외부에서 접근할 수 있도록 했습�
 결과 사진
 <p align="center"><img src="./ingress-check.png" width="600" height="550"/></p>
 <p align="center"><img src="./ingress-check2.png" width="600" height="50"/></p>
+
 ## 10.
 별도의 namespace를 지정하지 않고 진행했습니다.
 
 
 ## 11.
 실행방법
+
+실행환경
+
+ - ubuntu20.04
+ - kubernetes version : 1.28.2
+ - docker version : 24.0.7
+ - containerd version : 1.6.26 
+
+해당 환경이 갖추어져 있어야하고, ingress-nginx와 HPA를 위한 Metric Server 설치가 별도로 필요합니다.
+
+
+1. petclinic image 가져오기
+```
+docker pull doongu/petclinic-spring
+```
+
+2. mysql:8.0.2 이미지 가져오기
+```
+docker pull mysql:8.0.2
+```
+
+이후에 해당 레포를 clone 받으시면 됩니다.
+```
+git clone https://github.com/doongu/payhere-devops-assignment.git
+```
+
+이제 차례대로 실행하면 됩니다.
+```
+
+```
+
+
+## 12.
+트러블 슈팅
+
+## 13.
+개선할점
+
+- yaml파일 관리하는 방식을 더 체계화 했으면 좋았을 것 같습니다. (변수를 통해 설정을 하는 등의 방식)
+
+- master node에서 ingress를 test했는데, 포트로 열어서 vm이 아닌 다른 환경에서 테스트를 했으면 더 좋았을 것 같습니다.
+
+- spec.metrics[0].tpye와 같이 yaml파일의 규칙에 대해 미숙해 공식문서를 참고하기 힘들었습니다. 이런 규칙에 대해 좀 더 숙지해야함을 느끼게 되었습니다.
